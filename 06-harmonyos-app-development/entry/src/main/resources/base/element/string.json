@@ -1,0 +1,15 @@
+{
+  "string": [
+    { "name": "home_title", "value": "智能巡检车控制台" },
+    { "name": "home_subtitle", "value": "Stage 模型 / ArkTS / TCP 客户端" },
+    { "name": "remote_mode_button", "value": "远程控制" },
+    { "name": "mecanum_mode_button", "value": "麦克纳姆轮" },
+    { "name": "network_mode_button", "value": "网络配置" },
+    { "name": "control_button_mode", "value": "按钮模式" },
+    { "name": "control_rocker_mode", "value": "摇杆模式" },
+    { "name": "network_ip", "value": "服务器 IP" },
+    { "name": "network_port", "value": "端口" },
+    { "name": "network_save", "value": "保存配置" },
+    { "name": "network_connect", "value": "连接测试" }
+  ]
+}

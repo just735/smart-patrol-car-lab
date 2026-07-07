@@ -11,6 +11,7 @@ from geometry_msgs.msg import Twist, Point
 from std_msgs.msg import String
 import math
 import json
+from .pid_controller import PIDController
 
 
 class TargetTrackingNode(Node):
@@ -24,6 +25,10 @@ class TargetTrackingNode(Node):
         self.declare_parameter('angular_speed', 0.5)
         self.declare_parameter('angle_tolerance', 10.0)
         self.declare_parameter('distance_tolerance', 0.1)
+        self.declare_parameter('pid_kp_angular', 0.01)
+        self.declare_parameter('pid_kd_angular', 0.005)
+        self.declare_parameter('pid_kp_linear', 0.3)
+        self.declare_parameter('pid_kd_linear', 0.1)
 
         self.min_distance = self.get_parameter('min_detection_distance').value
         self.max_distance = self.get_parameter('max_detection_distance').value
@@ -32,6 +37,19 @@ class TargetTrackingNode(Node):
         self.angular_speed = self.get_parameter('angular_speed').value
         self.angle_tolerance = self.get_parameter('angle_tolerance').value
         self.distance_tolerance = self.get_parameter('distance_tolerance').value
+
+        # PID控制器
+        pid_kp_angular = self.get_parameter('pid_kp_angular').value
+        pid_kd_angular = self.get_parameter('pid_kd_angular').value
+        pid_kp_linear = self.get_parameter('pid_kp_linear').value
+        pid_kd_linear = self.get_parameter('pid_kd_linear').value
+
+        self.angular_pid = PIDController(pid_kp_angular, 0.0, pid_kd_angular,
+                                          output_min=-self.angular_speed,
+                                          output_max=self.angular_speed)
+        self.linear_pid = PIDController(pid_kp_linear, 0.0, pid_kd_linear,
+                                         output_min=-self.linear_speed,
+                                         output_max=self.linear_speed)
 
         self.scan_sub = self.create_subscription(
             LaserScan,
@@ -99,34 +117,37 @@ class TargetTrackingNode(Node):
         self.control_robot()
 
     def control_robot(self):
-        """根据目标位置控制机器人运动"""
+        """根据目标位置控制机器人运动（使用PID控制）"""
         cmd = Twist()
 
         if not self.target_found:
             cmd.linear.x = 0.0
             cmd.angular.z = self.angular_speed * 0.3
+            self.angular_pid.reset()
+            self.linear_pid.reset()
             self.get_logger().info('搜索目标中...', throttle_duration_sec=2.0)
         else:
-            angle_error = self.target_angle
+            angle_error = math.radians(self.target_angle)
+            distance_error = self.target_dist - self.target_distance
 
-            if abs(angle_error) > self.angle_tolerance:
+            if abs(self.target_angle) > self.angle_tolerance:
                 cmd.linear.x = 0.0
-                cmd.angular.z = self.angular_speed if angle_error > 0 else -self.angular_speed
-                self.get_logger().info(f'调整角度: {angle_error:.1f}°')
+                cmd.angular.z = self.angular_pid.update(angle_error)
+                self.linear_pid.reset()
+                self.get_logger().info(f'调整角度: {self.target_angle:.1f}°, 角速度: {cmd.angular.z:.2f}')
             else:
-                distance_error = self.target_dist - self.target_distance
-
                 if abs(distance_error) > self.distance_tolerance:
-                    if distance_error > 0:
-                        cmd.linear.x = self.linear_speed
-                        self.get_logger().info(f'前进接近目标: 剩余{distance_error:.2f}m')
-                    else:
-                        cmd.linear.x = -self.linear_speed * 0.5
-                        self.get_logger().info(f'后退远离目标: 距离过近{-distance_error:.2f}m')
-                    cmd.angular.z = 0.0
+                    cmd.linear.x = self.linear_pid.update(distance_error)
+                    cmd.angular.z = self.angular_pid.update(angle_error) * 0.3
+                    self.get_logger().info(
+                        f'距离误差: {distance_error:.2f}m, 线速度: {cmd.linear.x:.2f}',
+                        throttle_duration_sec=0.5
+                    )
                 else:
                     cmd.linear.x = 0.0
                     cmd.angular.z = 0.0
+                    self.angular_pid.reset()
+                    self.linear_pid.reset()
                     self.get_logger().info('已到达目标位置', throttle_duration_sec=2.0)
 
         self.cmd_vel_pub.publish(cmd)

@@ -45,22 +45,31 @@ class ObstacleAvoidanceNode(Node):
         angle_min = msg.angle_min
         angle_increment = msg.angle_increment
 
+        # 数据有效性检查
+        if len(ranges) == 0:
+            self.get_logger().warn('接收到空的雷达数据', throttle_duration_sec=5.0)
+            return
+
         front_ranges = []
         left_ranges = []
         right_ranges = []
 
         for i, distance in enumerate(ranges):
-            if math.isinf(distance) or math.isnan(distance):
+            # 过滤无效数据
+            if math.isinf(distance) or math.isnan(distance) or distance < 0.1:
                 continue
 
             angle_deg = math.degrees(angle_min + i * angle_increment)
             angle_deg = (angle_deg + 360) % 360
 
+            # 前方扇区：±front_angle_range度
             if angle_deg <= self.front_angle_range or angle_deg >= (360 - self.front_angle_range):
                 front_ranges.append(distance)
-            elif 0 < angle_deg < 90:
+            # 左侧扇区：30-150度
+            elif 30 < angle_deg <= 150:
                 left_ranges.append(distance)
-            elif 270 < angle_deg < 360:
+            # 右侧扇区：210-330度
+            elif 210 < angle_deg < 330:
                 right_ranges.append(distance)
 
         min_front = min(front_ranges) if front_ranges else float('inf')
@@ -74,10 +83,13 @@ class ObstacleAvoidanceNode(Node):
 
         cmd = Twist()
 
+        # 避障逻辑
         if min_front < self.safe_distance:
+            # 危险区域：停止并转向
             self.get_logger().warn(f'前方障碍物过近！距离: {min_front:.2f}m')
             cmd.linear.x = 0.0
 
+            # 选择空间更大的方向转向
             if min_left > min_right:
                 cmd.angular.z = self.angular_speed
                 self.get_logger().info('向左转避障')
@@ -86,14 +98,17 @@ class ObstacleAvoidanceNode(Node):
                 self.get_logger().info('向右转避障')
 
         elif min_front < self.warning_distance:
+            # 警告区域：减速并微调方向
             self.get_logger().info(f'前方有障碍物，减速。距离: {min_front:.2f}m')
             cmd.linear.x = self.linear_speed * 0.5
 
+            # 微调方向
             if min_left > min_right:
                 cmd.angular.z = self.angular_speed * 0.3
             else:
                 cmd.angular.z = -self.angular_speed * 0.3
         else:
+            # 安全区域：正常前进
             cmd.linear.x = self.linear_speed
             cmd.angular.z = 0.0
 

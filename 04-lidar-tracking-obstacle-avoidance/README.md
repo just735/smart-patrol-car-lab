@@ -12,21 +12,32 @@
 │   │   └── obstacle_avoidance_node.py
 │   ├── launch/
 │   │   └── obstacle_avoidance_launch.py
+│   ├── resource/
+│   │   └── lidar_obstacle_avoidance
 │   ├── package.xml
 │   └── setup.py
 │
 ├── lidar_tracking/                # 激光雷达目标跟踪功能包
 │   ├── lidar_tracking/
 │   │   ├── __init__.py
-│   │   └── target_tracking_node.py
+│   │   ├── target_tracking_node.py    # 目标跟踪节点
+│   │   ├── pid_controller.py          # PID控制器
+│   │   ├── lidar_test_node.py         # 雷达数据测试节点
+│   │   └── chassis_test_node.py       # 底盘控制测试节点
 │   ├── launch/
-│   │   └── target_tracking_launch.py
+│   │   ├── target_tracking_launch.py
+│   │   ├── lidar_test_launch.py       # 雷达测试启动文件
+│   │   └── chassis_test_launch.py     # 底盘测试启动文件
+│   ├── resource/
+│   │   └── lidar_tracking
 │   ├── package.xml
 │   └── setup.py
 │
-└── 1 思岚A1激光雷达简介及使用/
-    └── 源码/
-        └── sllidar_ros2/          # 思岚雷达ROS2驱动
+├── DEBUGGING_GUIDE.md             # 详细调试指南
+├── QUICK_START.md                 # 快速启动手册
+├── build.sh                       # 快速编译脚本
+├── setup_env.sh                   # 环境配置脚本
+└── README.md
 ```
 
 ## 功能特性
@@ -55,6 +66,7 @@
   - 对准模式: 调整角度对准目标
   - 接近模式: 前进或后退以保持目标距离
   - 保持模式: 到达目标位置后停止
+- **控制方式**: 使用PID控制器实现平滑跟踪，减少震荡
 - **目标信息发布**: 通过`/target_info`话题发布目标的距离、角度、坐标等信息
 
 **可配置参数**:
@@ -65,6 +77,22 @@
 - `angular_speed`: 角速度 (默认: 0.5 rad/s)
 - `angle_tolerance`: 角度容差 (默认: 10°)
 - `distance_tolerance`: 距离容差 (默认: 0.1m)
+- `pid_kp_angular`: 角度PID比例系数 (默认: 0.01)
+- `pid_kd_angular`: 角度PID微分系数 (默认: 0.005)
+- `pid_kp_linear`: 距离PID比例系数 (默认: 0.3)
+- `pid_kd_linear`: 距离PID微分系数 (默认: 0.1)
+
+### 3. 调试测试工具
+
+**雷达数据测试** (`lidar_test_node`):
+- 实时打印雷达扫描数据统计
+- 显示前/后/左/右四个方向的最近障碍距离
+- 用于验证雷达硬件是否正常工作
+
+**底盘控制测试** (`chassis_test_node`):
+- 自动测试前进、后退、左转、右转等动作
+- 验证底盘驱动是否正常响应
+- 用于调试底盘硬件和驱动
 
 ## 环境要求
 
@@ -133,6 +161,43 @@ source scripts/create_udev_rules.sh
 ```
 
 ## 使用方法
+
+### 快速开始
+
+**首次使用，配置环境：**
+
+```bash
+# 在Docker容器中执行
+cd /path/to/04-lidar-tracking-obstacle-avoidance
+./setup_env.sh
+source ~/.bashrc
+```
+
+**详细说明请查看：**
+- [QUICK_START.md](QUICK_START.md) - 快速启动指令手册
+- [DEBUGGING_GUIDE.md](DEBUGGING_GUIDE.md) - 完整调试指南
+
+### 单独测试功能
+
+#### 测试雷达数据
+```bash
+# 启动雷达+测试节点
+ros2 launch lidar_tracking lidar_test_launch.py
+
+# 或使用快捷命令
+n5
+```
+
+#### 测试底盘控制
+```bash
+# 终端1: 启动底盘驱动
+n1
+
+# 终端2: 启动测试序列
+ros2 launch lidar_tracking chassis_test_launch.py
+# 或
+n6
+```
 
 ### 启动避障功能
 

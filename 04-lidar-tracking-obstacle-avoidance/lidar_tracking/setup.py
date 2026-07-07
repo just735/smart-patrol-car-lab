@@ -24,6 +24,8 @@ setup(
     entry_points={
         'console_scripts': [
             'target_tracking_node = lidar_tracking.target_tracking_node:main',
+            'lidar_test_node = lidar_tracking.lidar_test_node:main',
+            'chassis_test_node = lidar_tracking.chassis_test_node:main',
         ],
     },
 )
