@@ -1,0 +1,81 @@
+{
+  "easycom": {
+    "autoscan": true,
+    "custom": {}
+  },
+  "pages": [
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationBarBackgroundColor": "#1677ff",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "首页",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
+      "path": "pages/remote/index",
+      "style": {
+        "navigationBarTitleText": "远程控制",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/mecanum/index",
+      "style": {
+        "navigationBarTitleText": "麦克纳姆轮",
+        "navigationBarBackgroundColor": "#ffffff"
+      }
+    },
+    {
+      "path": "pages/mine/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "智能巡检车",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f0f3f9"
+  },
+  "tabBar": {
+    "color": "#8a8f98",
+    "selectedColor": "#1677ff",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "static/tab/home.png",
+        "selectedIconPath": "static/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/remote/index",
+        "text": "控制",
+        "iconPath": "static/tab/control.png",
+        "selectedIconPath": "static/tab/control-active.png"
+      },
+      {
+        "pagePath": "pages/mecanum/index",
+        "text": "麦轮",
+        "iconPath": "static/tab/mecanum.png",
+        "selectedIconPath": "static/tab/mecanum-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "static/tab/mine.png",
+        "selectedIconPath": "static/tab/mine-active.png"
+      }
+    ]
+  }
+}

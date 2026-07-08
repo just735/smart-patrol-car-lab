@@ -1,0 +1,15 @@
+{
+  "license": "",
+  "devDependencies": {
+    "@ohos/hypium": "1.0.6"
+  },
+  "author": "",
+  "name": "entry",
+  "description": "smart patrol car entry module",
+  "main": "",
+  "version": "1.0.0",
+  "dynamicDependencies": {},
+  "dependencies": {
+    "rocker": "file:../Rocker"
+  }
+}

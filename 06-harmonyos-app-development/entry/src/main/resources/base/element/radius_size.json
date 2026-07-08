@@ -1,0 +1,6 @@
+{
+  "float": [
+    { "name": "index_button_radius", "value": "22.0vp" },
+    { "name": "card_radius", "value": "20.0vp" }
+  ]
+}

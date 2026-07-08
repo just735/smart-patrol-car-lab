@@ -1,0 +1,15 @@
+export const CarDirection = {
+  STOP: 0,
+  FRONT: 1,
+  AFTER: 2,
+  LEFT: 3,
+  RIGHT: 4,
+  LEFT_ROTATE: 5,
+  RIGHT_ROTATE: 6,
+  BRAKE: 7,
+}
+
+export const CtrlMode = {
+  BUTTON: 'button',
+  ROCKER: 'rocker',
+}

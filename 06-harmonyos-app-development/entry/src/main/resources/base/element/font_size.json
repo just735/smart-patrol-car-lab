@@ -1,0 +1,7 @@
+{
+  "float": [
+    { "name": "index_text_size", "value": "18.0fp" },
+    { "name": "page_title_size", "value": "24.0fp" },
+    { "name": "content_size", "value": "16.0fp" }
+  ]
+}

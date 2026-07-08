@@ -1,0 +1,20 @@
+{
+  "string": [
+    {
+      "name": "app_name",
+      "value": "智能巡检车"
+    },
+    {
+      "name": "module_desc",
+      "value": "smart patrol car module"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "smart patrol car entry ability"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "智能巡检车"
+    }
+  ]
+}

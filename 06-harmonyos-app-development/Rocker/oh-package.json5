@@ -1,0 +1,11 @@
+{
+  "license": "",
+  "devDependencies": {},
+  "author": "",
+  "name": "rocker",
+  "description": "rocker module",
+  "main": "",
+  "version": "1.0.0",
+  "dynamicDependencies": {},
+  "dependencies": {}
+}
