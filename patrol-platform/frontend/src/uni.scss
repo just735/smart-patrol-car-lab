@@ -1,0 +1,126 @@
+$primary: #1677ff;
+$primary-dark: #0958d9;
+$primary-light: #e8f3ff;
+$purple: #722ed1;
+$purple-light: #f9f0ff;
+$cyan: #13c2c2;
+$cyan-light: #e6fffb;
+$text-primary: #1f2329;
+$text-secondary: #646a73;
+$text-tertiary: #8f959e;
+$bg-page: #eef2f8;
+$card-bg: #ffffff;
+$card-radius: 24rpx;
+$input-radius: 16rpx;
+$success: #00b578;
+$success-light: #e8fff3;
+$danger: #ff4d4f;
+$danger-light: #fff1f0;
+$warning: #fa8c16;
+$warning-light: #fff7e6;
+$border-light: rgba(31, 35, 41, 0.06);
+$shadow-sm: 0 4rpx 20rpx rgba(31, 35, 41, 0.05);
+$shadow: 0 12rpx 40rpx rgba(31, 35, 41, 0.08);
+$shadow-primary: 0 12rpx 40rpx rgba(22, 119, 255, 0.22);
+$shadow-purple: 0 12rpx 40rpx rgba(114, 46, 209, 0.2);
+$gradient-primary: linear-gradient(135deg, #1677ff 0%, #0958d9 100%);
+$gradient-purple: linear-gradient(135deg, #722ed1 0%, #531dab 100%);
+$gradient-hero: linear-gradient(165deg, #1a7cff 0%, #0958d9 45%, #003a8c 100%);
+
+@mixin card {
+  background: $card-bg;
+  border-radius: $card-radius;
+  box-shadow: $shadow-sm;
+  border: 1rpx solid $border-light;
+}
+
+@mixin card-elevated {
+  background: $card-bg;
+  border-radius: $card-radius;
+  box-shadow: $shadow;
+  border: 1rpx solid rgba(255, 255, 255, 0.8);
+}
+
+@mixin page-wrap {
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: 24rpx 28rpx;
+  padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+}
+
+@mixin section-title {
+  margin-bottom: 20rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: $text-primary;
+  letter-spacing: 0.5rpx;
+}
+
+@mixin field-label {
+  display: block;
+  margin-bottom: 12rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: $text-secondary;
+}
+
+@mixin field-input {
+  width: 100%;
+  height: 92rpx;
+  padding: 0 28rpx;
+  font-size: 30rpx;
+  color: $text-primary;
+  background: #f7f9fc;
+  border: 2rpx solid transparent;
+  border-radius: $input-radius;
+  box-sizing: border-box;
+}
+
+@mixin btn-base {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 92rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  border-radius: $input-radius;
+  border: none;
+
+  &::after {
+    border: none;
+  }
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  color: #fff;
+  background: $gradient-primary;
+  box-shadow: 0 8rpx 24rpx rgba(22, 119, 255, 0.28);
+}
+
+@mixin btn-success {
+  @include btn-base;
+  color: #fff;
+  background: linear-gradient(135deg, #00b578, #00945f);
+  box-shadow: 0 8rpx 24rpx rgba(0, 181, 120, 0.25);
+}
+
+@mixin btn-ghost {
+  @include btn-base;
+  color: $text-secondary;
+  background: #f0f3f8;
+  border: 1rpx solid $border-light;
+}
+
+@mixin status-dot($color) {
+  width: 12rpx;
+  height: 12rpx;
+  margin-right: 10rpx;
+  background: $color;
+  border-radius: 50%;
+}
+
+@mixin glass-light {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1rpx solid rgba(255, 255, 255, 0.25);
+}

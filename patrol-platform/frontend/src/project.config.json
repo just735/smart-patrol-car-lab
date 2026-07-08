@@ -1,0 +1,14 @@
+{
+  "description": "微信小程序本地开发配置",
+  "projectname": "智能巡检车",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "./",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "postcss": true,
+    "minified": false,
+    "newFeature": true,
+    "compileHotReLoad": true
+  }
+}
