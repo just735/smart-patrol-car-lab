@@ -2,6 +2,7 @@
   <view class="page">
     <view class="welcome-card">
       <view class="welcome-bg"></view>
+      <view class="welcome-bg welcome-bg-2"></view>
       <view class="welcome-body">
         <view class="welcome-left">
           <text class="greeting">{{ greeting }}，{{ displayName }}</text>
@@ -11,14 +12,17 @@
           <text class="refresh-icon">↻</text>
         </view>
       </view>
-      <view :class="['ui-badge', apiOnline ? 'online' : 'offline']">
-        <view class="ui-badge-dot"></view>
-        <text>{{ apiOnline ? '服务正常' : '服务离线' }}</text>
+      <view class="welcome-footer">
+        <view :class="['ui-badge', apiOnline ? 'online' : 'offline']">
+          <view class="ui-badge-dot"></view>
+          <text>{{ apiOnline ? '服务正常' : '服务离线' }}</text>
+        </view>
+        <text v-if="lastRefresh" class="refresh-time">{{ lastRefresh }}</text>
       </view>
     </view>
 
     <view class="status-grid">
-      <view class="status-card">
+      <view class="status-card" hover-class="card-hover">
         <view class="card-top">
           <view class="status-icon api">API</view>
           <view :class="['pulse', apiOnline ? 'on' : 'off']"></view>
@@ -27,8 +31,9 @@
         <text :class="['status-value', apiOnline ? 'online' : 'offline']">
           {{ apiOnline ? '正常运行' : '无法连接' }}
         </text>
+        <text class="status-hint">{{ apiOnline ? 'FastAPI 已就绪' : '请检查后端' }}</text>
       </view>
-      <view class="status-card">
+      <view class="status-card" hover-class="card-hover">
         <view class="card-top">
           <view class="status-icon tcp">TCP</view>
           <view :class="['pulse', carConnected ? 'on' : 'off']"></view>
@@ -37,11 +42,15 @@
         <text :class="['status-value', carConnected ? 'online' : 'offline']">
           {{ carConnected ? '已连接' : '未连接' }}
         </text>
+        <text class="status-hint">{{ carConnected ? '通信正常' : '前往「我的」配置' }}</text>
       </view>
     </view>
 
     <view class="ui-section">
-      <text class="ui-section-title">快捷入口</text>
+      <view class="ui-section-head">
+        <text class="ui-section-title">快捷入口</text>
+        <text class="ui-section-extra">3 个模块</text>
+      </view>
       <text class="ui-section-desc">选择功能模块进入控制</text>
     </view>
 
@@ -53,6 +62,7 @@
         hover-class="action-hover"
         @click="goTab(item.url)"
       >
+        <view :class="['action-accent', item.theme]"></view>
         <view :class="['action-icon', item.theme]">
           <text class="icon-text">{{ item.icon }}</text>
         </view>
@@ -63,6 +73,14 @@
         <view class="action-arrow">
           <text>›</text>
         </view>
+      </view>
+    </view>
+
+    <view class="tip-card">
+      <text class="tip-icon">💡</text>
+      <view class="tip-body">
+        <text class="tip-title">使用提示</text>
+        <text class="tip-desc">首次使用请先在「我的」页面配置小车 IP 与端口，再进行远程控制。</text>
       </view>
     </view>
   </view>
@@ -76,6 +94,7 @@ import { getUser, requireLogin } from '@/utils/auth'
 
 const apiOnline = ref(false)
 const carConnected = ref(false)
+const lastRefresh = ref('')
 
 const actions = [
   { url: '/pages/remote/index', icon: '控', title: '远程控制', desc: '按钮 · 摇杆 · 循迹', theme: 'control' },
@@ -90,10 +109,19 @@ const displayName = computed(() => {
 
 const greeting = computed(() => {
   const h = new Date().getHours()
+  if (h < 6) return '夜深了'
   if (h < 12) return '早上好'
+  if (h < 14) return '中午好'
   if (h < 18) return '下午好'
   return '晚上好'
 })
+
+function formatTime() {
+  const now = new Date()
+  const h = String(now.getHours()).padStart(2, '0')
+  const m = String(now.getMinutes()).padStart(2, '0')
+  return `${h}:${m} 更新`
+}
 
 async function refresh() {
   uni.showLoading({ title: '刷新中' })
@@ -109,6 +137,7 @@ async function loadStatus() {
   } catch {
     apiOnline.value = false
     carConnected.value = false
+    lastRefresh.value = formatTime()
     return
   }
 
@@ -118,6 +147,7 @@ async function loadStatus() {
   } catch {
     carConnected.value = false
   }
+  lastRefresh.value = formatTime()
 }
 
 onShow(async () => {
@@ -140,17 +170,19 @@ function goTab(url) {
 </script>
 
 <style lang="scss" scoped>
+@import '../../uni.scss';
+
 .page {
   @include page-wrap;
 }
 
 .welcome-card {
   position: relative;
-  padding: 36rpx 32rpx 28rpx;
-  margin-bottom: 24rpx;
+  padding: 44rpx $space-2xl 36rpx;
+  margin-bottom: 28rpx;
   overflow: hidden;
   background: $gradient-primary;
-  border-radius: $card-radius;
+  border-radius: $radius-2xl;
   box-shadow: $shadow-primary;
 }
 
@@ -158,108 +190,135 @@ function goTab(url) {
   position: absolute;
   top: -60rpx;
   right: -40rpx;
-  width: 200rpx;
-  height: 200rpx;
-  background: rgba(255, 255, 255, 0.08);
+  width: 240rpx;
+  height: 240rpx;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 50%;
+}
+
+.welcome-bg-2 {
+  top: auto;
+  right: auto;
+  bottom: -80rpx;
+  left: -50rpx;
+  width: 180rpx;
+  height: 180rpx;
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .welcome-body {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 20rpx;
+  margin-bottom: $space-lg;
 }
 
 .greeting {
   display: block;
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: 700;
-  color: #fff;
+  color: $text-white;
+  line-height: 1.3;
 }
 
 .sub {
   display: block;
-  margin-top: 8rpx;
+  margin-top: 10rpx;
   font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.85);
+  color: $text-white-secondary;
 }
 
 .refresh-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 64rpx;
-  height: 64rpx;
+  @include flex-center;
+  width: 72rpx;
+  height: 72rpx;
   @include glass-light;
   border-radius: 50%;
 }
 
-.refresh-icon {
-  font-size: 36rpx;
-  color: #fff;
+.refresh-hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: scale(0.95);
 }
 
-.refresh-hover {
-  opacity: 0.8;
+.refresh-icon {
+  font-size: 40rpx;
+  color: $text-white;
+}
+
+.welcome-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.refresh-time {
+  font-size: 22rpx;
+  color: $text-white-tertiary;
 }
 
 .status-grid {
   display: flex;
   flex-direction: row;
-  margin-bottom: 32rpx;
+  gap: $space-base;
+  margin-bottom: $space-2xl;
 }
 
 .status-card {
   flex: 1;
-  padding: 24rpx;
+  padding: $space-xl $space-lg;
   @include card;
+}
 
-  &:first-child {
-    margin-right: 16rpx;
-  }
+.card-hover {
+  @include card-hover;
 }
 
 .card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16rpx;
+  margin-bottom: $space-base;
 }
 
 .status-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56rpx;
-  height: 36rpx;
+  @include flex-center;
+  min-width: 64rpx;
+  height: 40rpx;
+  padding: 0 $space-sm;
   font-size: 20rpx;
   font-weight: 700;
-  color: #fff;
-  border-radius: 8rpx;
+  color: $text-white;
+  border-radius: $radius-sm;
 }
 
 .status-icon.api {
-  background: $primary;
+  background: $gradient-primary;
 }
 
 .status-icon.tcp {
-  background: $cyan;
+  background: $gradient-cyan;
 }
 
 .pulse {
-  width: 12rpx;
-  height: 12rpx;
+  width: 14rpx;
+  height: 14rpx;
   border-radius: 50%;
 }
 
 .pulse.on {
   background: $success;
-  box-shadow: 0 0 10rpx rgba(0, 181, 120, 0.7);
+  box-shadow: 0 0 12rpx rgba(0, 181, 120, 0.8);
+  animation: pulseOn 2s ease-in-out infinite;
+}
+
+@keyframes pulseOn {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 .pulse.off {
-  background: $text-tertiary;
+  background: $text-quaternary;
 }
 
 .status-label {
@@ -270,9 +329,17 @@ function goTab(url) {
 
 .status-value {
   display: block;
-  margin-top: 6rpx;
+  margin-top: 4rpx;
   font-size: 28rpx;
   font-weight: 600;
+  line-height: 1.3;
+}
+
+.status-hint {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: $text-tertiary;
 }
 
 .online {
@@ -286,47 +353,54 @@ function goTab(url) {
 .action-list {
   display: flex;
   flex-direction: column;
+  gap: $space-base;
+  margin-bottom: $space-xl;
 }
 
 .action-item {
+  position: relative;
   display: flex;
   align-items: center;
-  padding: 28rpx 24rpx;
-  margin-bottom: 16rpx;
+  padding: 28rpx $space-xl 28rpx 20rpx;
+  overflow: hidden;
   @include card;
 }
 
 .action-hover {
-  background: #fafbfd;
+  @include card-hover;
 }
 
+.action-accent {
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 6rpx;
+  border-radius: 0 6rpx 6rpx 0;
+}
+
+.action-accent.control { background: $gradient-primary; }
+.action-accent.mecanum { background: $gradient-purple; }
+.action-accent.mine { background: $gradient-cyan; }
+
 .action-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   width: 84rpx;
   height: 84rpx;
-  margin-right: 20rpx;
-  border-radius: 22rpx;
+  margin-right: $space-lg;
+  margin-left: 8rpx;
+  border-radius: $radius-lg;
 }
 
 .icon-text {
   font-size: 34rpx;
   font-weight: 700;
-  color: #fff;
+  color: $text-white;
 }
 
-.action-icon.control {
-  background: $gradient-primary;
-}
-
-.action-icon.mecanum {
-  background: $gradient-purple;
-}
-
-.action-icon.mine {
-  background: linear-gradient(135deg, #13c2c2, #08979c);
-}
+.action-icon.control { background: $gradient-primary; box-shadow: 0 8rpx 20rpx rgba(22, 119, 255, 0.3); }
+.action-icon.mecanum { background: $gradient-purple; box-shadow: 0 8rpx 20rpx rgba(114, 46, 209, 0.3); }
+.action-icon.mine { background: $gradient-cyan; box-shadow: 0 8rpx 20rpx rgba(19, 194, 194, 0.3); }
 
 .action-body {
   flex: 1;
@@ -347,14 +421,41 @@ function goTab(url) {
 }
 
 .action-arrow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @include flex-center;
   width: 48rpx;
   height: 48rpx;
   font-size: 32rpx;
   color: $text-tertiary;
-  background: #f5f7fa;
+  background: $bg-gray;
   border-radius: 50%;
+}
+
+.tip-card {
+  display: flex;
+  align-items: flex-start;
+  padding: $space-xl;
+  background: linear-gradient(135deg, #fffbe6 0%, #fff7e6 100%);
+  border: 1rpx solid rgba(250, 140, 22, 0.15);
+  border-radius: $radius-xl;
+}
+
+.tip-icon {
+  margin-right: $space-base;
+  font-size: 36rpx;
+}
+
+.tip-title {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #d46b08;
+}
+
+.tip-desc {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #ad6800;
+  line-height: 1.5;
 }
 </style>

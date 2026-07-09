@@ -3,3 +3,4 @@ dist/
 unpackage/
 .DS_Store
 *.log
+weixin.appid.json

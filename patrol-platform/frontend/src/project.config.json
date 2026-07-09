@@ -1,5 +1,6 @@
 {
   "description": "微信小程序本地开发配置",
+  "appid": "wx47783a985f31579b",
   "projectname": "智能巡检车",
   "compileType": "miniprogram",
   "miniprogramRoot": "./",

@@ -1,64 +1,131 @@
+// 主色系
 $primary: #1677ff;
 $primary-dark: #0958d9;
 $primary-light: #e8f3ff;
+$primary-lighter: #f0f7ff;
+
+// 辅助色
 $purple: #722ed1;
 $purple-light: #f9f0ff;
 $cyan: #13c2c2;
 $cyan-light: #e6fffb;
+$orange: #fa8c16;
+$orange-light: #fff7e6;
+
+// 文本色
 $text-primary: #1f2329;
 $text-secondary: #646a73;
 $text-tertiary: #8f959e;
-$bg-page: #eef2f8;
+$text-quaternary: #bbbfc4;
+$text-white: #ffffff;
+$text-white-secondary: rgba(255, 255, 255, 0.85);
+$text-white-tertiary: rgba(255, 255, 255, 0.65);
+
+// 背景色
+$bg-page: #f5f7fa;
+$bg-gray: #eef2f8;
+$bg-light: #f7f9fc;
 $card-bg: #ffffff;
-$card-radius: 24rpx;
-$input-radius: 16rpx;
+
+// 状态色
 $success: #00b578;
 $success-light: #e8fff3;
 $danger: #ff4d4f;
 $danger-light: #fff1f0;
 $warning: #fa8c16;
 $warning-light: #fff7e6;
+$info: #1677ff;
+$info-light: #e8f3ff;
+
+// 边框
 $border-light: rgba(31, 35, 41, 0.06);
-$shadow-sm: 0 4rpx 20rpx rgba(31, 35, 41, 0.05);
-$shadow: 0 12rpx 40rpx rgba(31, 35, 41, 0.08);
-$shadow-primary: 0 12rpx 40rpx rgba(22, 119, 255, 0.22);
-$shadow-purple: 0 12rpx 40rpx rgba(114, 46, 209, 0.2);
+$border-base: rgba(31, 35, 41, 0.1);
+$border-white: rgba(255, 255, 255, 0.15);
+
+// 圆角
+$radius-xs: 8rpx;
+$radius-sm: 12rpx;
+$radius-base: 16rpx;
+$radius-lg: 20rpx;
+$radius-xl: 24rpx;
+$radius-2xl: 32rpx;
+$radius-round: 999rpx;
+
+// 间距
+$space-xs: 8rpx;
+$space-sm: 12rpx;
+$space-base: 16rpx;
+$space-lg: 20rpx;
+$space-xl: 24rpx;
+$space-2xl: 32rpx;
+$space-3xl: 40rpx;
+
+// 阴影
+$shadow-xs: 0 2rpx 8rpx rgba(31, 35, 41, 0.04);
+$shadow-sm: 0 4rpx 16rpx rgba(31, 35, 41, 0.06);
+$shadow-base: 0 8rpx 24rpx rgba(31, 35, 41, 0.08);
+$shadow-lg: 0 12rpx 32rpx rgba(31, 35, 41, 0.1);
+$shadow-xl: 0 16rpx 48rpx rgba(31, 35, 41, 0.12);
+$shadow-primary: 0 12rpx 32rpx rgba(22, 119, 255, 0.25);
+$shadow-purple: 0 12rpx 32rpx rgba(114, 46, 209, 0.22);
+$shadow-success: 0 8rpx 24rpx rgba(0, 181, 120, 0.25);
+
+// 渐变
 $gradient-primary: linear-gradient(135deg, #1677ff 0%, #0958d9 100%);
 $gradient-purple: linear-gradient(135deg, #722ed1 0%, #531dab 100%);
-$gradient-hero: linear-gradient(165deg, #1a7cff 0%, #0958d9 45%, #003a8c 100%);
+$gradient-cyan: linear-gradient(135deg, #13c2c2 0%, #08979c 100%);
+$gradient-orange: linear-gradient(135deg, #ffa940 0%, #fa8c16 100%);
+$gradient-hero: linear-gradient(165deg, #1a7cff 0%, #0958d9 50%, #003a8c 100%);
 
+// 兼容旧变量
+$card-radius: $radius-xl;
+$input-radius: $radius-base;
+
+// ========== Mixins ==========
+
+// 卡片样式
 @mixin card {
   background: $card-bg;
-  border-radius: $card-radius;
+  border-radius: $radius-xl;
   box-shadow: $shadow-sm;
   border: 1rpx solid $border-light;
+  transition: all 0.3s ease;
+}
+
+@mixin card-hover {
+  box-shadow: $shadow-base;
+  transform: translateY(-2rpx);
 }
 
 @mixin card-elevated {
   background: $card-bg;
-  border-radius: $card-radius;
-  box-shadow: $shadow;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-lg;
   border: 1rpx solid rgba(255, 255, 255, 0.8);
 }
 
+// 页面容器
 @mixin page-wrap {
   box-sizing: border-box;
   min-height: 100%;
-  padding: 24rpx 28rpx;
+  padding: $space-xl 28rpx;
   padding-bottom: calc(32rpx + env(safe-area-inset-bottom));
+  background: $bg-page;
 }
 
+// 标题
 @mixin section-title {
-  margin-bottom: 20rpx;
-  font-size: 30rpx;
+  margin-bottom: $space-lg;
+  font-size: 32rpx;
   font-weight: 600;
   color: $text-primary;
   letter-spacing: 0.5rpx;
 }
 
+// 表单
 @mixin field-label {
   display: block;
-  margin-bottom: 12rpx;
+  margin-bottom: $space-sm;
   font-size: 26rpx;
   font-weight: 500;
   color: $text-secondary;
@@ -66,61 +133,225 @@ $gradient-hero: linear-gradient(165deg, #1a7cff 0%, #0958d9 45%, #003a8c 100%);
 
 @mixin field-input {
   width: 100%;
-  height: 92rpx;
+  height: 96rpx;
   padding: 0 28rpx;
   font-size: 30rpx;
   color: $text-primary;
-  background: #f7f9fc;
-  border: 2rpx solid transparent;
-  border-radius: $input-radius;
+  background: $bg-light;
+  border: 2rpx solid $border-light;
+  border-radius: $radius-base;
   box-sizing: border-box;
+  transition: all 0.2s ease;
+
+  &:focus {
+    background: $card-bg;
+    border-color: $primary;
+  }
 }
 
+// 按钮基础
 @mixin btn-base {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 92rpx;
+  height: 96rpx;
+  padding: 0 $space-2xl;
   font-size: 30rpx;
   font-weight: 500;
-  border-radius: $input-radius;
+  border-radius: $radius-base;
   border: none;
+  transition: all 0.2s ease;
 
   &::after {
     border: none;
   }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
+// 按钮样式
 @mixin btn-primary {
   @include btn-base;
-  color: #fff;
+  color: $text-white;
   background: $gradient-primary;
-  box-shadow: 0 8rpx 24rpx rgba(22, 119, 255, 0.28);
+  box-shadow: $shadow-primary;
+
+  &:active {
+    opacity: 0.9;
+  }
 }
 
 @mixin btn-success {
   @include btn-base;
-  color: #fff;
+  color: $text-white;
   background: linear-gradient(135deg, #00b578, #00945f);
-  box-shadow: 0 8rpx 24rpx rgba(0, 181, 120, 0.25);
+  box-shadow: $shadow-success;
+
+  &:active {
+    opacity: 0.9;
+  }
 }
 
 @mixin btn-ghost {
   @include btn-base;
   color: $text-secondary;
-  background: #f0f3f8;
+  background: $bg-gray;
   border: 1rpx solid $border-light;
+
+  &:active {
+    background: #e9edf3;
+  }
 }
 
+@mixin btn-danger {
+  @include btn-base;
+  color: $text-white;
+  background: linear-gradient(135deg, #ff7875, #ff4d4f);
+  box-shadow: 0 8rpx 24rpx rgba(255, 77, 79, 0.25);
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+// 玻璃态
+@mixin glass-light {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1rpx solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10rpx);
+}
+
+@mixin glass-dark {
+  background: rgba(0, 0, 0, 0.15);
+  border: 1rpx solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10rpx);
+}
+
+// 状态点
 @mixin status-dot($color) {
   width: 12rpx;
   height: 12rpx;
   margin-right: 10rpx;
   background: $color;
   border-radius: 50%;
+  box-shadow: 0 0 8rpx rgba($color, 0.5);
 }
 
-@mixin glass-light {
-  background: rgba(255, 255, 255, 0.18);
-  border: 1rpx solid rgba(255, 255, 255, 0.25);
+// 徽章
+@mixin badge($bg-color, $text-color) {
+  display: inline-flex;
+  align-items: center;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: $text-color;
+  background: $bg-color;
+  border-radius: $radius-round;
+}
+
+// 文本截断
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin text-ellipsis-multi($lines: 2) {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+
+// 居中
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// 过渡动画
+@mixin transition-base {
+  transition: all 0.3s ease;
+}
+
+@mixin transition-fast {
+  transition: all 0.2s ease;
+}
+
+// 页面顶栏
+@mixin page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $space-xl;
+}
+
+@mixin page-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: $text-primary;
+  line-height: 1.25;
+  letter-spacing: 0.5rpx;
+}
+
+@mixin page-subtitle {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: $text-tertiary;
+  line-height: 1.4;
+}
+
+// 分段切换
+@mixin segment-control {
+  display: flex;
+  flex-direction: row;
+  padding: 6rpx;
+  background: $bg-gray;
+  border-radius: $radius-lg;
+  box-shadow: inset 0 2rpx 6rpx rgba(31, 35, 41, 0.04);
+}
+
+@mixin segment-item {
+  @include flex-center;
+  flex: 1;
+  padding: 18rpx 0;
+  font-size: 28rpx;
+  color: $text-secondary;
+  border-radius: $radius-sm;
+  @include transition-fast;
+}
+
+@mixin segment-item-active {
+  font-weight: 600;
+  color: $primary;
+  background: $card-bg;
+  box-shadow: $shadow-xs;
+}
+
+// 快捷标签
+@mixin chip {
+  padding: 14rpx 28rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  border-radius: $radius-round;
+  @include transition-fast;
+}
+
+// 列表项
+@mixin list-item {
+  display: flex;
+  align-items: center;
+  padding: 28rpx $space-xl;
+  @include card;
+  @include transition-base;
+
+  &:active {
+    @include card-hover;
+  }
 }

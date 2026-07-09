@@ -11,6 +11,11 @@
       </view>
     </view>
 
+    <view v-if="!carConnected" class="ui-banner warn">
+      <text class="ui-banner-icon">⚠</text>
+      <text>小车未连接，请先在「我的」配置网络并测试连接</text>
+    </view>
+
     <view class="mode-tabs">
       <view
         v-for="tab in tabs"
@@ -21,13 +26,17 @@
         <text class="tab-icon">{{ tab.icon }}</text>
         <text class="tab-label">{{ tab.label }}</text>
       </view>
+      <view class="tab-indicator" :class="ctrlMode === CtrlMode.ROCKER ? 'right' : 'left'"></view>
     </view>
 
     <view class="ui-section">
       <view class="ui-section-head">
         <text class="ui-section-title">{{ ctrlMode === CtrlMode.BUTTON ? '方向控制' : '摇杆控制' }}</text>
-        <text v-if="ctrlMode === CtrlMode.ROCKER" class="ui-section-extra">{{ speedX }}, {{ speedY }}</text>
+        <text v-if="ctrlMode === CtrlMode.ROCKER" class="speed-tag">{{ speedX }}, {{ speedY }}</text>
       </view>
+      <text class="ui-section-desc">
+        {{ ctrlMode === CtrlMode.BUTTON ? '按住方向键移动，松开自动停止' : '拖动摇杆控制速度与方向' }}
+      </text>
     </view>
 
     <view class="control-card">
@@ -36,34 +45,55 @@
     </view>
 
     <view class="ui-section">
-      <text class="ui-section-title">视频监控</text>
-      <text class="ui-section-desc">视频端口 {{ videoPort }}</text>
+      <view class="ui-section-head">
+        <text class="ui-section-title">视频监控</text>
+        <text class="ui-section-extra">端口 {{ videoPort }}</text>
+      </view>
     </view>
 
     <view class="video-card">
       <view class="video-frame">
-        <text class="video-placeholder">LIVE</text>
+        <view class="video-scanline"></view>
+        <view class="video-corner tl"></view>
+        <view class="video-corner tr"></view>
+        <view class="video-corner bl"></view>
+        <view class="video-corner br"></view>
+        <view class="video-center">
+          <text class="video-camera">📷</text>
+          <text class="video-placeholder">LIVE</text>
+        </view>
       </view>
-      <text class="video-tip">预留区域 · 可接入 RTSP / WebRTC</text>
+      <view class="video-meta">
+        <text class="video-tip">预留区域 · 可接入 RTSP / WebRTC 视频流</text>
+        <view class="video-status">
+          <view class="rec-dot"></view>
+          <text>待接入</text>
+        </view>
+      </view>
     </view>
 
     <view class="ui-section">
       <text class="ui-section-title">循迹模式</text>
-      <text class="ui-section-desc">自动沿线路行驶</text>
+      <text class="ui-section-desc">自动沿预设线路行驶</text>
     </view>
 
     <view class="action-row">
-      <button class="track-btn start" hover-class="btn-hover" @click="startTracking">
-        ▶ 开始循迹
+      <button class="track-btn start" hover-class="btn-press" @click="startTracking">
+        <text class="btn-icon">▶</text>
+        <text>开始循迹</text>
       </button>
-      <button class="track-btn stop" hover-class="btn-hover" @click="stopTracking">
-        ■ 停止循迹
+      <button class="track-btn stop" hover-class="btn-press" @click="stopTracking">
+        <text class="btn-icon">■</text>
+        <text>停止循迹</text>
       </button>
     </view>
 
     <view class="status-card">
       <view class="status-row">
-        <text class="status-label">指令反馈</text>
+        <view class="status-left">
+          <text class="status-dot-icon">◉</text>
+          <text class="status-label">指令反馈</text>
+        </view>
         <text class="status-time">实时</text>
       </view>
       <text class="status-value">{{ statusText }}</text>
@@ -165,57 +195,60 @@ onShow(() => {
 </script>
 
 <style lang="scss" scoped>
+@import '../../uni.scss';
+
 .page {
   @include page-wrap;
 }
 
 .page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24rpx;
+  @include page-header;
 }
 
 .header-title {
-  display: block;
-  font-size: 36rpx;
-  font-weight: 700;
-  color: $text-primary;
+  @include page-title;
 }
 
 .header-desc {
-  display: block;
-  margin-top: 4rpx;
-  font-size: 24rpx;
-  color: $text-tertiary;
+  @include page-subtitle;
 }
 
 .mode-tabs {
-  display: flex;
-  flex-direction: row;
-  padding: 6rpx;
-  margin-bottom: 8rpx;
-  background: #e4e9f2;
-  border-radius: 20rpx;
+  position: relative;
+  @include segment-control;
+  margin-bottom: $space-xl;
 }
 
 .mode-tab {
-  display: flex;
-  flex: 1;
+  @include segment-item;
+  position: relative;
+  z-index: 1;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  padding: 20rpx 0;
-  border-radius: 16rpx;
+  padding: 22rpx 0;
 }
 
 .mode-tab.active {
-  background: #fff;
-  box-shadow: $shadow-sm;
+  @include segment-item-active;
+  background: transparent;
+  box-shadow: none;
 }
 
+.tab-indicator {
+  position: absolute;
+  top: 6rpx;
+  bottom: 6rpx;
+  width: calc(50% - 6rpx);
+  background: $card-bg;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-xs;
+  @include transition-fast;
+}
+
+.tab-indicator.left { left: 6rpx; }
+.tab-indicator.right { left: calc(50%); }
+
 .tab-icon {
-  margin-right: 8rpx;
+  margin-right: $space-xs;
   font-size: 28rpx;
   color: $text-tertiary;
 }
@@ -227,6 +260,7 @@ onShow(() => {
 
 .tab-label {
   font-size: 28rpx;
+  font-weight: 500;
   color: $text-secondary;
 }
 
@@ -234,111 +268,200 @@ onShow(() => {
   font-weight: 600;
 }
 
+.speed-tag {
+  padding: 6rpx 16rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: $primary;
+  background: $primary-lighter;
+  border-radius: $radius-round;
+  font-family: 'Courier New', monospace;
+}
+
 .control-card {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 36rpx 20rpx;
-  margin-bottom: 8rpx;
+  @include flex-center;
+  padding: 48rpx $space-lg;
+  margin-bottom: $space-xl;
+  min-height: 420rpx;
   @include card;
+  background: linear-gradient(180deg, $card-bg 0%, #f8fafd 100%);
 }
 
 .video-card {
-  padding: 24rpx;
-  margin-bottom: 8rpx;
+  padding: $space-xl;
+  margin-bottom: $space-xl;
   @include card;
 }
 
 .video-frame {
+  position: relative;
+  @include flex-center;
+  height: 260rpx;
+  background: linear-gradient(145deg, #141820 0%, #1e2433 50%, #2a3142 100%);
+  border-radius: $radius-lg;
+  overflow: hidden;
+}
+
+.video-scanline {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3rpx,
+    rgba(255, 255, 255, 0.02) 3rpx,
+    rgba(255, 255, 255, 0.02) 6rpx
+  );
+  pointer-events: none;
+}
+
+.video-corner {
+  position: absolute;
+  width: 24rpx;
+  height: 24rpx;
+  border-color: rgba(22, 119, 255, 0.6);
+  border-style: solid;
+}
+
+.video-corner.tl { top: 16rpx; left: 16rpx; border-width: 3rpx 0 0 3rpx; }
+.video-corner.tr { top: 16rpx; right: 16rpx; border-width: 3rpx 3rpx 0 0; }
+.video-corner.bl { bottom: 16rpx; left: 16rpx; border-width: 0 0 3rpx 3rpx; }
+.video-corner.br { bottom: 16rpx; right: 16rpx; border-width: 0 3rpx 3rpx 0; }
+
+.video-center {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 200rpx;
-  background: linear-gradient(145deg, #1a1f2e 0%, #2d3548 100%);
-  border-radius: 16rpx;
+}
+
+.video-camera {
+  font-size: 48rpx;
+  opacity: 0.5;
+  margin-bottom: 12rpx;
 }
 
 .video-placeholder {
-  padding: 8rpx 20rpx;
-  font-size: 24rpx;
+  padding: 8rpx 28rpx;
+  font-size: 22rpx;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 4rpx;
-  border: 2rpx solid rgba(255, 255, 255, 0.15);
-  border-radius: 8rpx;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 8rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.2);
+  border-radius: $radius-sm;
+}
+
+.video-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: $space-base;
 }
 
 .video-tip {
-  display: block;
-  margin-top: 16rpx;
+  flex: 1;
   font-size: 24rpx;
-  text-align: center;
   color: $text-tertiary;
+}
+
+.video-status {
+  display: flex;
+  align-items: center;
+  font-size: 22rpx;
+  color: $text-tertiary;
+}
+
+.rec-dot {
+  width: 10rpx;
+  height: 10rpx;
+  margin-right: 8rpx;
+  background: $text-quaternary;
+  border-radius: 50%;
 }
 
 .action-row {
   display: flex;
   flex-direction: row;
-  margin-bottom: 8rpx;
+  gap: $space-base;
+  margin-bottom: $space-xl;
 }
 
 .track-btn {
+  @include flex-center;
   flex: 1;
-  height: 92rpx;
+  flex-direction: row;
+  height: 100rpx;
+  gap: 10rpx;
   font-size: 28rpx;
-  font-weight: 500;
-  border-radius: $input-radius;
+  font-weight: 600;
+  border-radius: $radius-lg;
   border: none;
+}
 
-  &::after {
-    border: none;
-  }
+.btn-icon {
+  font-size: 24rpx;
 }
 
 .track-btn.start {
-  margin-right: 16rpx;
-  color: #fff;
+  color: $text-white;
   background: $gradient-primary;
-  box-shadow: 0 8rpx 20rpx rgba(22, 119, 255, 0.25);
+  box-shadow: $shadow-primary;
 }
 
 .track-btn.stop {
-  color: #fff;
-  background: linear-gradient(135deg, #ffa940, #fa8c16);
-  box-shadow: 0 8rpx 20rpx rgba(250, 140, 22, 0.25);
+  color: $text-white;
+  background: $gradient-orange;
+  box-shadow: 0 8rpx 24rpx rgba(250, 140, 22, 0.28);
 }
 
-.btn-hover {
-  opacity: 0.85;
+.btn-press {
+  opacity: 0.88;
+  transform: scale(0.98);
 }
 
 .status-card {
-  padding: 28rpx 32rpx;
-  margin-top: 8rpx;
+  padding: 32rpx;
   @include card;
+  background: linear-gradient(135deg, #fafbfd 0%, $card-bg 100%);
 }
 
 .status-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: $space-sm;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+}
+
+.status-dot-icon {
+  margin-right: 8rpx;
+  font-size: 20rpx;
+  color: $success;
 }
 
 .status-label {
   font-size: 24rpx;
+  font-weight: 500;
   color: $text-secondary;
 }
 
 .status-time {
   font-size: 22rpx;
+  font-weight: 500;
   color: $success;
+  padding: 6rpx 14rpx;
+  background: $success-light;
+  border-radius: $radius-round;
 }
 
 .status-value {
   display: block;
-  margin-top: 10rpx;
   font-size: 30rpx;
   font-weight: 600;
   color: $text-primary;
+  line-height: 1.4;
 }
 </style>

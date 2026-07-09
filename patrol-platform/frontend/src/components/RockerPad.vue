@@ -9,19 +9,27 @@
     <view class="rocker-base">
       <view class="guide guide-h"></view>
       <view class="guide guide-v"></view>
+      <view class="guide-ring guide-ring-1"></view>
+      <view class="guide-ring guide-ring-2"></view>
       <view class="dir dir-t">前</view>
       <view class="dir dir-b">后</view>
       <view class="dir dir-l">左</view>
       <view class="dir dir-r">右</view>
-      <view class="rocker-ring"></view>
-      <view class="rocker-stick" :style="stickStyle">
+      <view class="rocker-stick" :class="{ active: isActive }" :style="stickStyle">
+        <view class="stick-glow"></view>
         <view class="stick-inner"></view>
       </view>
     </view>
     <view class="speed-display">
-      <text class="speed-item">X: {{ speedX }}</text>
-      <text class="speed-divider">|</text>
-      <text class="speed-item">Y: {{ speedY }}</text>
+      <view class="speed-block">
+        <text class="speed-label">X</text>
+        <text class="speed-item">{{ speedX }}</text>
+      </view>
+      <view class="speed-divider"></view>
+      <view class="speed-block">
+        <text class="speed-label">Y</text>
+        <text class="speed-item">{{ speedY }}</text>
+      </view>
     </view>
   </view>
 </template>
@@ -36,6 +44,7 @@ const offsetX = ref(0)
 const offsetY = ref(0)
 const speedX = ref(0)
 const speedY = ref(0)
+const isActive = ref(false)
 const baseRect = ref(null)
 const instance = getCurrentInstance()
 
@@ -61,6 +70,7 @@ function onTouch(event) {
   const touch = event.touches?.[0]
   if (!touch || !baseRect.value) return
 
+  isActive.value = true
   const rect = baseRect.value
   const centerX = rect.left + rect.width / 2
   const centerY = rect.top + rect.height / 2
@@ -77,6 +87,7 @@ function onTouch(event) {
 }
 
 function onEnd() {
+  isActive.value = false
   offsetX.value = 0
   offsetY.value = 0
   speedX.value = 0
@@ -86,6 +97,8 @@ function onEnd() {
 </script>
 
 <style lang="scss" scoped>
+@import '../uni.scss';
+
 .rocker-wrap {
   display: flex;
   flex-direction: column;
@@ -94,103 +107,143 @@ function onEnd() {
 
 .rocker-base {
   position: relative;
-  width: 460rpx;
-  height: 460rpx;
-  background: radial-gradient(circle at 50% 45%, #f8fafc 0%, #e2e8f0 100%);
+  width: 480rpx;
+  height: 480rpx;
+  background: radial-gradient(circle at 50% 45%, #fafbfc 0%, #e8ecf2 100%);
   border-radius: 50%;
-  box-shadow: inset 0 6rpx 20rpx rgba(0, 0, 0, 0.06), 0 8rpx 32rpx rgba(31, 35, 41, 0.06);
+  box-shadow:
+    inset 0 8rpx 24rpx rgba(31, 35, 41, 0.06),
+    0 8rpx 32rpx rgba(31, 35, 41, 0.08);
 }
 
 .guide {
   position: absolute;
-  background: #d5dbe5;
+  background: #d0d7e2;
 }
 
 .guide-h {
   top: 50%;
-  left: 12%;
-  width: 76%;
+  left: 10%;
+  width: 80%;
   height: 2rpx;
   margin-top: -1rpx;
 }
 
 .guide-v {
-  top: 12%;
+  top: 10%;
   left: 50%;
   width: 2rpx;
-  height: 76%;
+  height: 80%;
   margin-left: -1rpx;
+}
+
+.guide-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.guide-ring-1 {
+  width: 320rpx;
+  height: 320rpx;
+  border: 2rpx dashed #c8cfd8;
+}
+
+.guide-ring-2 {
+  width: 200rpx;
+  height: 200rpx;
+  border: 1rpx solid #dde3eb;
 }
 
 .dir {
   position: absolute;
   font-size: 22rpx;
-  font-weight: 500;
+  font-weight: 600;
   color: $text-tertiary;
 }
 
-.dir-t { top: 24rpx; left: 50%; transform: translateX(-50%); }
-.dir-b { bottom: 24rpx; left: 50%; transform: translateX(-50%); }
-.dir-l { left: 24rpx; top: 50%; transform: translateY(-50%); }
-.dir-r { right: 24rpx; top: 50%; transform: translateY(-50%); }
-
-.rocker-ring {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 300rpx;
-  height: 300rpx;
-  margin-top: -150rpx;
-  margin-left: -150rpx;
-  border: 2rpx dashed #c5cad3;
-  border-radius: 50%;
-}
+.dir-t { top: 28rpx; left: 50%; transform: translateX(-50%); }
+.dir-b { bottom: 28rpx; left: 50%; transform: translateX(-50%); }
+.dir-l { left: 28rpx; top: 50%; transform: translateY(-50%); }
+.dir-r { right: 28rpx; top: 50%; transform: translateY(-50%); }
 
 .rocker-stick {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 108rpx;
-  height: 108rpx;
-  margin-top: -54rpx;
-  margin-left: -54rpx;
+  width: 112rpx;
+  height: 112rpx;
+  margin-top: -56rpx;
+  margin-left: -56rpx;
   background: $gradient-primary;
   border-radius: 50%;
-  box-shadow: 0 10rpx 28rpx rgba(22, 119, 255, 0.45);
+  box-shadow: 0 10rpx 28rpx rgba(22, 119, 255, 0.4);
+  @include transition-fast;
+}
+
+.rocker-stick.active {
+  box-shadow: 0 14rpx 36rpx rgba(22, 119, 255, 0.55);
+  transform-origin: center;
+}
+
+.stick-glow {
+  position: absolute;
+  inset: -8rpx;
+  border-radius: 50%;
+  background: rgba(22, 119, 255, 0.15);
 }
 
 .stick-inner {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 40rpx;
-  height: 40rpx;
-  margin-top: -20rpx;
-  margin-left: -20rpx;
-  background: rgba(255, 255, 255, 0.35);
+  width: 44rpx;
+  height: 44rpx;
+  margin-top: -22rpx;
+  margin-left: -22rpx;
+  background: rgba(255, 255, 255, 0.4);
   border-radius: 50%;
+  box-shadow: inset 0 2rpx 6rpx rgba(255, 255, 255, 0.5);
 }
 
 .speed-display {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-top: 24rpx;
-  padding: 12rpx 32rpx;
-  background: #f0f3f8;
-  border-radius: 999rpx;
+  margin-top: 28rpx;
+  padding: 16rpx 40rpx;
+  background: $card-bg;
+  border: 1rpx solid $border-light;
+  border-radius: $radius-round;
+  box-shadow: $shadow-xs;
+}
+
+.speed-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80rpx;
+}
+
+.speed-label {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: $text-tertiary;
 }
 
 .speed-item {
-  font-size: 26rpx;
-  font-weight: 600;
+  font-size: 32rpx;
+  font-weight: 700;
   color: $primary;
-  font-variant-numeric: tabular-nums;
+  font-family: 'Courier New', monospace;
 }
 
 .speed-divider {
-  margin: 0 16rpx;
-  font-size: 24rpx;
-  color: $text-tertiary;
+  width: 2rpx;
+  height: 48rpx;
+  margin: 0 28rpx;
+  background: $border-light;
 }
 </style>
