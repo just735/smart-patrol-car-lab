@@ -1,0 +1,53 @@
+> hvigor DEBUG ValidateUtil [36mSchema D:\code\smart-patrol-car-lab\06-harmonyos-app-development\build-profile.json5 success.[39m
+> hvigor DEBUG ValidateUtil [36mSchema D:\code\smart-patrol-car-lab\06-harmonyos-app-development\entry\build-profile.json5 success.[39m
+> hvigor DEBUG ohos-dependency-manager [36mModule entry Collected Dependency: [39m
+> hvigor DEBUG ohos-dependency-manager [36mModule entry's total dependency: 0[39m
+> hvigor DEBUG find-target-product [36mFind product from build-profile.json: default[39m
+> hvigor DEBUG Hvigor-target-service [36mentry require SDK: toolchains ArkTS[39m
+> hvigor DEBUG Sdk [36mSdk init in 15 ms [39m
+> hvigor DEBUG hvigor-abstract-process-resource [36mrestool module names: entry,Rocker[39m
+> hvigor DEBUG hvigor-abstract-process-resource [36mrestool module names: entry,Rocker[39m
+> hvigor DEBUG hvigor-abstract-process-resource [36mrestool module names: entry,Rocker[39m
+> hvigor DEBUG hvigor-abstract-process-resource [36mrestool module names: entry,Rocker[39m
+> hvigor DEBUG ValidateUtil [36mSchema D:\code\smart-patrol-car-lab\06-harmonyos-app-development\Rocker\build-profile.json5 success.[39m
+> hvigor DEBUG ohos-dependency-manager [36mModule Rocker Collected Dependency: [39m
+> hvigor DEBUG ohos-dependency-manager [36mModule Rocker's total dependency: 0[39m
+> hvigor DEBUG find-target-product [36mFind product from build-profile.json: default[39m
+> hvigor DEBUG Hvigor-target-service [36mRocker require SDK: toolchains ArkTS[39m
+> hvigor DEBUG Sdk [36mSdk init in 15 ms [39m
+> hvigor DEBUG hvigor-abstract-process-resource [36mrestool module names: Rocker,entry[39m
+> hvigor DEBUG hvigor-abstract-process-resource [36mrestool module names: Rocker,entry[39m
+> hvigor DEBUG ValidateUtil [36mSchema D:\code\smart-patrol-car-lab\06-harmonyos-app-development\AppScope\app.json5 success.[39m
+> hvigor DEBUG ValidateUtil [36mSchema D:\code\smart-patrol-car-lab\06-harmonyos-app-development\entry\src\main\module.json5 success.[39m
+> hvigor [32mFinished :entry:default@PreBuild... after 89 ms [39m
+> hvigor DEBUG hvigor-merge-profile [36mChange app target API version with '9'[39m
+> hvigor DEBUG hvigor-merge-profile [36mChange app minimum API version with '9'[39m
+> hvigor DEBUG hvigor-merge-profile [36mChange app api release type with 'Release'[39m
+> hvigor [32mFinished :entry:default@MergeProfile... after 3 ms [39m
+> hvigor [32mFinished :entry:default@GenerateLoaderJson... after 5 ms [39m
+> hvigor DEBUG EtsArkComponent [36m[
+  'C:\\Users\\28772\\nodejs\\node.exe',
+  'C:\\Users\\28772\\AppData\\Local\\OpenHarmony\\Sdk\\9\\ets\\build-tools\\ets-loader\\bin\\ark\\ts2abc.js',
+  '--target-api-version',
+  '9'
+][39m
+> hvigor DEBUG ProcessUtils [36m9.0.0.0[39m
+> hvigor [32mFinished :entry:default@ProcessProfile... after 106 ms [39m
+> hvigor [32mFinished :entry:default@ProcessResource... after 2 ms [39m
+> hvigor DEBUG CompileResource [36m[restool]
+ [
+  'C:\\Users\\28772\\AppData\\Local\\OpenHarmony\\Sdk\\9\\toolchains\\restool.exe',
+  '-l',
+  'D:\\code\\smart-patrol-car-lab\\06-harmonyos-app-development\\entry\\build\\default\\intermediates\\res\\default\\resConfig.json'
+][39m
+> hvigor DEBUG ProcessUtils [36mInfo: restool resources compile success.[39m
+> hvigor [32mFinished :entry:default@CompileResource... after 84 ms [39m
+> hvigor [32mFinished :entry:default@PreviewHookCompileResource... after 1 ms [39m
+> hvigor [32mFinished :entry:default@ReplacePreviewerPage... after 1 ms [39m
+> hvigor [32mFinished :entry:buildPreviewerResource... after 1 ms [39m
+> hvigor [32mFinished :entry:default@PreviewUpdateAssets... after 1 ms [39m
+> hvigor DEBUG PreviewerArkCompile [36mBuild config file not found: D:\code\smart-patrol-car-lab\06-harmonyos-app-development\entry\.preview\config\buildConfig.json[39m
+> hvigor [91mERROR: Failed :entry:default@PreviewArkTS... [39m
+> hvigor [91mERROR: Socket binding failed.[39m
+> hvigor [91mERROR: BUILD FAILED in 2 s 630 ms [39m
+> hvigor DEBUG Preview_Build [36mArk compile finished.[39m

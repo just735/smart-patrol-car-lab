@@ -7,8 +7,8 @@
     {
       "path": "pages/login/index",
       "style": {
-        "navigationBarTitleText": "登录",
-        "navigationBarBackgroundColor": "#1677ff",
+        "navigationBarTitleText": "智能巡检车",
+        "navigationBarBackgroundColor": "#0958d9",
         "navigationBarTextStyle": "white"
       }
     },
@@ -44,13 +44,13 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "智能巡检车",
     "navigationBarBackgroundColor": "#ffffff",
-    "backgroundColor": "#f0f3f9"
+    "backgroundColor": "#f5f7fa"
   },
   "tabBar": {
-    "color": "#8a8f98",
+    "color": "#8f959e",
     "selectedColor": "#1677ff",
     "backgroundColor": "#ffffff",
-    "borderStyle": "black",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/home/index",

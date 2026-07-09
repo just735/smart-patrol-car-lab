@@ -1,0 +1,243 @@
+{
+  "version": "1.0",
+  "workerIdList": [
+    -1,
+    2,
+    0
+  ],
+  "metrics": [
+    {
+      "type": "build_line",
+      "endTime": 1783477588162,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@PreBuild",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588040
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588171,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@GenerateMetadata",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588164
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588182,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@MergeProfile",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588179
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588186,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@BuildNativeWithCmake",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588186
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588193,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@GenerateLoaderJson",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588192
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588203,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@MakePackInfo",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588195
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588309,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@ProcessProfile",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588204
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588310,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@BuildNativeWithNinja",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588309
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588319,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@ProcessResource",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588310
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588320,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@ProcessLibs",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588319
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588423,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@CompileResource",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588321
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477588443,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@CompileJS",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588440
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477592095,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@CompileArkTS",
+      "taskPath": "entry",
+      "workerId": 2,
+      "startTime": 1783477588439
+    },
+    {
+      "type": "default",
+      "endTime": 1783477592095,
+      "status": "closed",
+      "children": [
+        {
+          "type": "build_line",
+          "endTime": 1783477592095,
+          "status": "closed",
+          "children": [],
+          "name": "overallTime",
+          "taskName": "default@CompileArkTS",
+          "taskPath": "entry",
+          "workerId": 2,
+          "startTime": 1783477588439
+        }
+      ],
+      "name": "overallTime",
+      "taskName": "default@CompileArkTS",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477588424
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477593205,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@PackageHap",
+      "taskPath": "entry",
+      "workerId": 0,
+      "startTime": 1783477592104
+    },
+    {
+      "type": "default",
+      "endTime": 1783477593205,
+      "status": "closed",
+      "children": [
+        {
+          "type": "build_line",
+          "endTime": 1783477593205,
+          "status": "closed",
+          "children": [],
+          "name": "overallTime",
+          "taskName": "default@PackageHap",
+          "taskPath": "entry",
+          "workerId": 0,
+          "startTime": 1783477592104
+        }
+      ],
+      "name": "overallTime",
+      "taskName": "default@PackageHap",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477592097
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477593207,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "default@SignHap",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477593206
+    },
+    {
+      "type": "build_line",
+      "endTime": 1783477593208,
+      "status": "closed",
+      "children": [],
+      "name": "overallTime",
+      "taskName": "assembleHap",
+      "taskPath": "entry",
+      "workerId": -1,
+      "startTime": 1783477593208
+    }
+  ],
+  "workLog": [
+    {
+      "type": "work",
+      "time": "[2026-07-08T10:26:32.093]",
+      "workerId": 2,
+      "content": "[2026-07-08T10:26:32.093] > hvigor \u001b[32m\u001b[33mWARN: \u001b[33mArkTS:WARN File: D:/code/smart-patrol-car-lab/06-harmonyos-app-development/entry/src/main/ets/tcp/TCPClientManager.ets:1:20\n Currently module for '@ohos.net.socket' is not verified. If you're importing napi, its verification will be enabled in later SDK version. Please make sure the corresponding .d.ts file is provided and the napis are correctly declared.\n\u001b[39m\r\n\u001b[39m\n",
+      "taskPath": "entry",
+      "taskName": "default@CompileArkTS",
+      "taskCompletePath": "entry:default@CompileArkTS"
+    }
+  ]
+}

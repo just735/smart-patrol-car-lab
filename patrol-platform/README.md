@@ -43,13 +43,33 @@ npm run dev:mp-weixin
 
 修改 `frontend/src/api/config.js` 中的 `BASE_URL` 指向后端（默认 `http://127.0.0.1:8000`）。
 
-### 微信开发者工具配置
+### 微信开发者工具 / HBuilderX 配置
 
-1. **AppID**：导入项目时在 AppID 下拉框选择 **「测试号」**（不要手动填 `touristappid`，新版工具已不支持）
-2. **本地设置**：勾选「不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书」
-3. 若报 `appid missing`：关闭项目 → 重新导入 `dist/build/mp-weixin` → 导入界面选 **测试号** → 编译
+HBuilderX 自动打开微信开发者工具时，**必须配置有效 AppID**（`wx` + 16 位，共 18 位），空字符串会报 `41002 appid missing`。
 
-`manifest.json` 中 `mp-weixin.appid` 留空即可，由开发者工具的测试号自动接管。
+**配置步骤（任选一种）：**
+
+**方式 A — 微信公众平台（推荐）**
+1. 打开 https://mp.weixin.qq.com/ 注册/登录小程序
+2. 开发 → 开发管理 → 开发设置 → 复制 **AppID**
+3. 在 `frontend` 目录执行：
+   ```bash
+   copy weixin.appid.example.json weixin.appid.json
+   ```
+4. 编辑 `weixin.appid.json`，填入 `"appid": "wx你的AppID"`
+5. 运行 `npm run dev:mp-weixin` 或在 HBuilderX 重新运行到微信
+
+**方式 B — 测试号**
+1. 先手动打开微信开发者工具，导入 `dist/build/mp-weixin`，AppID 选 **「测试号」**
+2. 打开生成后的 `dist/build/mp-weixin/project.private.config.json`，复制其中的 `appid`
+3. 写入 `frontend/weixin.appid.json`
+4. 再运行 `npm run dev:mp-weixin`
+
+**快捷配置（Windows）**：双击运行 `frontend/scripts/setup-weixin-appid.bat`，按提示粘贴 AppID。
+
+npm 构建/开发前会自动执行 `scripts/sync-weixin-appid.js`；**HBuilderX 不跑 npm 钩子**，已在 `vite.config.js` 插件中于编译时同步 AppID 并写入输出目录。未配置 AppID 时仍可编译，但 HBuilderX 自动打开微信开发者工具会失败。
+
+**本地设置**：勾选「不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书」。
 
 ## 默认账号
 

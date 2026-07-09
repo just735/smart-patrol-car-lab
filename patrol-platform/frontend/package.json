@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "智能巡检车 UniApp 小程序",
   "scripts": {
+    "sync:weixin-appid": "node scripts/sync-weixin-appid.js",
+    "predev:mp-weixin": "node scripts/sync-weixin-appid.js",
     "dev:mp-weixin": "uni -p mp-weixin",
+    "prebuild:mp-weixin": "node scripts/sync-weixin-appid.js",
     "build:mp-weixin": "uni build -p mp-weixin",
     "dev:h5": "uni",
     "build:h5": "uni build"
